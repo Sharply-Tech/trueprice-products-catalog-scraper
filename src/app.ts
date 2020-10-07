@@ -14,8 +14,10 @@ interface ProductAvailability {
 
 interface Product {
     title: string,
-    url: string,
-    availability: ProductAvailability
+    url?: string,
+    availability?: ProductAvailability,
+    oldPrice?: number,
+    price: number
 }
 
 const CATEGORIES = [
@@ -58,7 +60,7 @@ const getProductsFromCategory = async (category: string): Promise<any> => {
     const isFirstPage: boolean = currentPageStart === 1;
     const isLastPage: boolean = currentPageEnd === totalProducts;
 
-    const products = []
+    const products: Product[] = []
 
     let productIndex = 1;
     while(products.length < currentPageSize &&
@@ -67,8 +69,29 @@ const getProductsFromCategory = async (category: string): Promise<any> => {
         try {
             const productTitleHandler = await page.waitForSelector(`.card-item:nth-child(${productIndex}) > .card > .card-section-wrapper > .card-section-mid > .card-body`, {timeout: 50})
             const productTitle = await productTitleHandler.innerText();
-            products.push(productTitle)
-            console.log('Scanned product: ' + productTitle)
+            // products.push(productTitle)
+
+            const oldPriceHandler =     await page.waitForSelector(`.card-item:nth-child(${productIndex}) > .card > .card-section-wrapper > .card-section-btm > .card-body > .pricing-old_preserve-space > .product-old-price`)
+            const oldPriceStr = await oldPriceHandler.innerText();
+
+            const oldPrice = oldPriceStr == null || oldPriceStr.trim() === '' ? null :
+                parseFloat(oldPriceStr.substring(0, oldPriceStr.indexOf('Lei'))
+                    .toLowerCase()
+                    .replace('lei', '')
+                    .replace('.', ''))/100;
+
+            const priceHandler = await page.waitForSelector(`.card-item:nth-child(${productIndex}) > .card > .card-section-wrapper > .card-section-btm > .card-body > .pricing-old_preserve-space > .product-new-price`)
+            const priceStr: string = await priceHandler.innerText();
+            const price = parseFloat(priceStr.toLowerCase().toLowerCase()
+                .replace('lei', '')
+                .replace('.', ''))/100
+
+            products.push({
+                title: productTitle,
+                price,
+                oldPrice
+            })
+            // console.log('Scanned product: ' + productTitle)
         } catch {
             console.log(category + ' -> skipping for index ' + productIndex)
         }
@@ -76,6 +99,9 @@ const getProductsFromCategory = async (category: string): Promise<any> => {
     }
 
     console.log(`Found ${products.length} products for ${category}`)
+    console.log(`${category} products: `)
+    console.log(JSON.stringify(products))
+
     // Select first product's title
 
     // console.log('')
