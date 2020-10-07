@@ -1,0 +1,38 @@
+{
+  "name": "trueprice-products-catalog-scraper",
+  "version": "1.0.0",
+  "description": "A service that automatically configures a products catalog in the TruePrice platform.\"",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc && node dist/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sharply-Tech/trueprice-products-catalog-scraper.git"
+  },
+  "keywords": [
+    "trueprice",
+    "products",
+    "categories",
+    "product",
+    "catalog",
+    "category",
+    "produse",
+    "emag"
+  ],
+  "author": "Cosmin Stoian",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sharply-Tech/trueprice-products-catalog-scraper/issues"
+  },
+  "homepage": "https://github.com/Sharply-Tech/trueprice-products-catalog-scraper#readme",
+  "devDependencies": {
+    "playwright": "^1.4.2",
+    "tslint": "^6.1.3",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "@types/node": "^14.11.2"
+  }
+}
