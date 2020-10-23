@@ -48,14 +48,14 @@ const getProductStockInfo = (stockInfoStr: string): ProductStockInfo => {
     if (stockInfoStr.startsWith('livrare_in')) {
         return {
             availability: ProductAvailabilityType.AVAILABLE,
-            estimatedDeliveryDays: parseInt(stockInfoStr.replace('livrarein', '').replace('zile', ''))
+            estimatedDeliveryDays: parseInt(stockInfoStr.replace('livrare_in', '').replace('zile', '').replace('_', ''))
         }
     }
 
     if (stockInfoStr.startsWith('ultimele')) {
         return {
             availability: ProductAvailabilityType.AVAILABLE,
-            itemsLeftOnStock: parseInt(stockInfoStr.replace('ultimele', '').replace('produse', ''))
+            itemsLeftOnStock: parseInt(stockInfoStr.replace('ultimele', '').replace('produse', '').replace('_', ''))
         }
     }
 
@@ -277,13 +277,13 @@ const resolveCategoryProductsLink = (category: string, pageIndex?: number) => {
 (async () => {
 
     const CATEGORIES = [
-        "telefoane-mobile",
+        // "telefoane-mobile",
         // "tablete",
         // "televizoare",
         // "laptopuri",
         // "smartwatch",
         // "desktop-pc",
-        // "placi_video",
+        "placi_video",
         // "placi_baza",
         // "memorii",
         // "procesoare",
